@@ -1,23 +1,28 @@
 const express = require('express');
+const { readdirSync } = require('fs')
+const bodyParser = require('body-parser')
+const morgan = require('morgan')
 const cors = require('cors');
 const app = express();
 const port = 3001;
 const pool = require('./config/db'); // Import the PostgreSQL connection
+const dotenv = require('dotenv');
+const axios = require('axios'); 
+dotenv.config();
+// Middleware to log requests to the console
 
+
+app.use(morgan('dev'));
 app.use(cors());
+app.use(bodyParser.json())
 
-app.get('/', async (req, res) => {
-  try {
-    const result = await pool.query('SELECT * FROM user_data');
-    console.log(`Server is connecting to db`);
-    res.json(result.rows);
-  } catch (error) {
-    console.error('Error executing query', error);
-    res.status(500).json({ error: 'Internal Server Error', details: error.message });
-  }
-});
+
+readdirSync('./routes')
+.map((r)=> app.use('/api', require('./routes/'+r)))
+
 
 
 app.listen(port, () => {
   console.log(`Server is listening at http://localhost:${port}`);
 });
+

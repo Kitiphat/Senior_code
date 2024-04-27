@@ -4,14 +4,45 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ChakraProvider } from "@chakra-ui/react";
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+import ChatMain from './components/chatBody';
+import Register from './page/register';
+import LoginPage from './page/login';
 
+
+
+const router = createBrowserRouter([
+  
+  {
+    path: "/",
+    element: <App />,
+  },
+  {
+    path: "/chats/:id",
+    element: <App />,
+  },
+  {
+    path: "/signup",
+    element: <Register />,
+  },
+  {
+    path: "/signin",
+    element: <LoginPage />,
+  },
+]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
  <ChakraProvider>
+  
   <React.StrictMode>
-    <App />
+  <RouterProvider router={router} />
+    
   </React.StrictMode>
+  
    </ChakraProvider>
 );
 

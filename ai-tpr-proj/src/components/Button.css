@@ -1,0 +1,12 @@
+#button:hover {
+    background: linear-gradient(0deg, #1d6ca9, #073558);
+    transform: translateY(-2px);
+  }
+
+#button:hover {
+    color: white;
+}
+
+#button:hover .sparkle {
+    transform: scale(1.75);
+}

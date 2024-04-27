@@ -1,30 +1,29 @@
 /* Custom scrollbar styles */
-.left-sidebar {
-    /* Remove the padding-right */
-    padding-right: 0;
-  
-    /* Add overflow-x: hidden to prevent horizontal scrollbar */
-    overflow-x: hidden;
-  }
-  
-  /* Hide the default scrollbar */
-  .left-sidebar::-webkit-scrollbar {
-    width: 7px;
-  }
-  
-  /* Track */
-  .left-sidebar::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  
-  /* Handle */
-  .left-sidebar::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 6px;
-  }
-  
-  /* Handle on hover */
-  .left-sidebar::-webkit-scrollbar-thumb:hover {
-    background: #555;
-  }
-  
+#scrollbar {
+  /* Remove the padding-right */
+  padding-right: 0;
+
+  /* Add overflow-x: hidden to prevent horizontal scrollbar */
+  overflow-x: hidden;
+}
+
+/* Hide the default scrollbar */
+#scrollbar::-webkit-scrollbar {
+  width: 7px;
+}
+
+/* Track */
+#scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+#scrollbar::-webkit-scrollbar-thumb {
+  background: #7a7a7a;
+  border-radius: 6px;
+}
+
+/* Handle on hover */
+#scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #545454;
+}
