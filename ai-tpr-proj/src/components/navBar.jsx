@@ -15,10 +15,18 @@ import {
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import { SettingsIcon } from '@chakra-ui/icons'
 import { useNavigate} from "react-router-dom";
+import Settings from "./Settings";
+import { useTheme } from './ThemeContext';
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState("");
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false); // state to store the opening and closing state of the Settings modal
+  const { themeColor, changeTheme } = useTheme();
+  
+  const handleThemeChange = (color) => {
+    changeTheme(color); // Change theme color with function
+  };
 
   useEffect(() => { 
     const checkUsername = () => {
@@ -70,10 +78,9 @@ const Navbar = () => {
                 </Flex>
               </MenuButton>
               <MenuList>
-                <MenuItem>
-                  <Link href="#" >
+                <MenuItem onClick={() => setIsSettingsOpen(true)}>
                   Setting  <SettingsIcon boxSize={4} ml="3"/> 
-                  </Link>
+                  <Settings isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} onChangeTheme={handleThemeChange}/> {/* Send props to enable or disable Settings modal */}
                 </MenuItem>
                 <MenuItem onClick={handleLogout}>
                   <Text mr="4"> Logout </Text>  <RiLogoutBoxRLine />

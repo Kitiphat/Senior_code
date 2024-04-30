@@ -11,7 +11,7 @@ import {
 import ChatMain from './components/chatBody';
 import Register from './page/register';
 import LoginPage from './page/login';
-
+import { ThemeProvider } from './components/ThemeContext';
 
 
 const router = createBrowserRouter([
@@ -39,8 +39,9 @@ root.render(
  <ChakraProvider>
   
   <React.StrictMode>
+  <ThemeProvider>
   <RouterProvider router={router} />
-    
+  </ThemeProvider>
   </React.StrictMode>
   
    </ChakraProvider>
