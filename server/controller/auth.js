@@ -46,7 +46,9 @@ exports.signIn = async (req, res) => {
     const payload = {
       user: {
         username: user.rows[0].username,
-        userId: user.rows[0].user_id
+        userId: user.rows[0].user_id,
+        name: user.rows[0].name
+
       }  
     };
     jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '2d' }, (err, token) => {

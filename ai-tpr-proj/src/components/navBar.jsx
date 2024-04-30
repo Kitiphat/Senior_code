@@ -7,7 +7,12 @@ import {
   Link,
   Image,
   Text,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
 } from "@chakra-ui/react";
+import { RiLogoutBoxRLine } from "react-icons/ri";
 import { SettingsIcon } from '@chakra-ui/icons'
 import { useNavigate} from "react-router-dom";
 
@@ -17,7 +22,7 @@ const Navbar = () => {
 
   useEffect(() => { 
     const checkUsername = () => {
-      const user = JSON.parse(localStorage.getItem('user'));
+      const user = JSON.parse(localStorage.getItem('name'));
       if (user) {
         setUser(user);
       } else {
@@ -31,6 +36,7 @@ const Navbar = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     localStorage.removeItem('chatrooms');
+    localStorage.removeItem('name');
     setUser(""); // Update the user state to reflect logout
     navigate("/"); // Navigate to the login page after logout
     window.location.reload();
@@ -45,26 +51,59 @@ const Navbar = () => {
       <Spacer />
       <Flex align="center" justify="center">
         <Spacer />
-        
-          <Flex gap={2} align="center" justify="center" color="white" mr={4}>
-          <Link  href="#" >
-            <Image
-              src="/img/usericon.jpg"
-              alt="User Logo"
-              boxSize="40px"
-              borderRadius="50%"
-              mr={2}
-            />
+
+        <Flex gap={2} align="center" justify="center" mr={4}>
+          {user ? (
+            <Menu>
+              <MenuButton as={Link} display="flex" alignItems="center" mr={4}>
+                <Flex alignItems="center">
+                  <Image
+                    src="/img/usericon.jpg"
+                    alt="User Logo"
+                    boxSize="40px"
+                    borderRadius="50%"
+                    mr={4}
+                  />
+                  <Text color="white" fontWeight="bold">
+                    {user}
+                  </Text>
+                </Flex>
+              </MenuButton>
+              <MenuList>
+                <MenuItem>
+                  <Link href="#" >
+                  Setting  <SettingsIcon boxSize={4} ml="3"/> 
+                  </Link>
+                </MenuItem>
+                <MenuItem onClick={handleLogout}>
+                  <Text mr="4"> Logout </Text>  <RiLogoutBoxRLine />
+                </MenuItem>
+                
+              </MenuList>
+            </Menu>
+          ) : (
+            <Link
+              color="white"
+              href="/signin"
+              display="flex"
+              alignItems="center"
+              mr={4}
+            >
+              <Flex alignItems="center">
+                <Image
+                  src="/img/usericon.jpg"
+                  alt="User Logo"
+                  boxSize="40px"
+                  borderRadius="50%"
+                  mr={4}
+                />
+                <Text color="white" fontWeight="bold">
+                  Login
+                </Text>
+              </Flex>
             </Link>
-            <Box>{user ? (<p> {user} </p>):(<Link color='white' href={"/signin"}> Login </Link>)}</Box>
-            <Box>{user ? (<Link _hover={{ textDecoration: "none" }} onClick={handleLogout}> Logout </Link>):(<>   </>)}</Box>
-          </Flex>
-        <Link href="#" color="white" mr={4}>
-          TH | EN
-        </Link>
-        <Link href="#" color="white" mr={4}>
-          <SettingsIcon boxSize={5} />
-        </Link>
+          )}
+        </Flex>
       </Flex>
     </Box>
   );
