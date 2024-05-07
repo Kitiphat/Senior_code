@@ -15,10 +15,11 @@ export const storeContent = async (chatData) => {
         },
       }
     );  // send data to server
-    console.log(response.data); // Log response data
+    console.log("log from line 18 chatContent.js",response.data); // Log response data
     return response.data;
   } catch (error) {
     console.log("Error sending data!", error);
     return { error: error.response.data || "Error storing data!" };
   }
 };
+

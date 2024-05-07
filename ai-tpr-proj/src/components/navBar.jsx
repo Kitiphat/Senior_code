@@ -11,6 +11,7 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  MenuDivider,
 } from "@chakra-ui/react";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import { SettingsIcon } from '@chakra-ui/icons'
@@ -22,6 +23,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState("");
   const [isSettingsOpen, setIsSettingsOpen] = useState(false); // state to store the opening and closing state of the Settings modal
+  const [username, setUsername] = useState(""); // state to store the username from the local storage
   const { themeColor, changeTheme } = useTheme();
   
   const handleThemeChange = (color) => {
@@ -31,10 +33,13 @@ const Navbar = () => {
   useEffect(() => { 
     const checkUsername = () => {
       const user = JSON.parse(localStorage.getItem('name'));
+      const username = JSON.parse(localStorage.getItem('user'));
       if (user) {
         setUser(user);
+        setUsername(username)
       } else {
         setUser("");
+        setUsername("")
       }
     }
     checkUsername();
@@ -50,11 +55,11 @@ const Navbar = () => {
     window.location.reload();
   };
   
-
+  // bgGradient="linear(to-r, #073558, #144272, #205295, #1d6ca9)"
   return (
-    <Box bg="#0066CC" w="100%" h="110px" display="flex" p={4} margin="auto">
+    <Box bgGradient="linear(to-bl, #011f4b, #03396c, #005b96, #6497b1)" w="100%" h="110px" display="flex" p={4} margin="auto">
       <Flex align="center">
-        <Image src="/img/TPRICOn4333.png" alt="Logo" boxSize="110px" />
+        <Image src="/img/MyWander.png" alt="Logo" boxSize="100px" ml='2'/>
       </Flex>
       <Spacer />
       <Flex align="center" justify="center">
@@ -78,6 +83,19 @@ const Navbar = () => {
                 </Flex>
               </MenuButton>
               <MenuList>
+                <MenuItem  >
+                <Image
+                    src="/img/usericon.jpg"
+                    alt="User Logo"
+                    boxSize="40px"
+                    borderRadius="50%"
+                    mr={4}
+                  />
+                  <Text  fontWeight="bold">
+                    {username}
+                  </Text>
+                </MenuItem>
+                <MenuDivider />
                 <MenuItem onClick={() => setIsSettingsOpen(true)}>
                   Setting  <SettingsIcon boxSize={4} ml="3"/> 
                   <Settings isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} onChangeTheme={handleThemeChange}/> {/* Send props to enable or disable Settings modal */}

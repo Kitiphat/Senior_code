@@ -68,6 +68,8 @@ const LeftSideBar = ({ onCreateChatroom, onSelectChatroom }) => {
 
     // Navigate to the newly created chatroom
     navigate(`/chats/${newUUID}`);
+    // Refresh the webpage
+    window.location.reload();
   }
   };
   
@@ -125,7 +127,7 @@ const LeftSideBar = ({ onCreateChatroom, onSelectChatroom }) => {
       }
     } 
     }
-    
+    window.location.reload();
   };
   
 

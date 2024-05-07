@@ -1,41 +1,59 @@
-import React from 'react';
-import { Box, Container, Text, Divider, VStack, HStack, Badge, Flex } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
+import { Box, Container, Text, Divider, VStack, Image } from '@chakra-ui/react';
+import { showMostPlaceCounts } from '../function/chatHistory';
+import "./ScrollBar.css";
 
 const RightSideBar = () => {
+  const [mostPlaceNames, setMostPlaceNames] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await showMostPlaceCounts();
+      setMostPlaceNames(res);
+    };
+    fetchData();
+  }, []);
+
   return (
-    <Box overflowY="auto" height="calc(100vh - 130px)" ml="2">
+    <Box height="calc(100vh - 130px)" ml="2" id="scrollbar" >
       <Container mt="5">
         <Text fontSize="xl" fontWeight="bold" color="white" mb="4">
           Recommendations
         </Text>
         <Divider borderColor="white" mb="4" />
-        {/* Recommendation section */}
-        <VStack spacing="4">
-          {/* Recommendation for questions */}
-          <Box>
-            <Text fontSize="lg" fontWeight="semibold" color="white" mb="2">
-              Top Questions
-            </Text>
-            <Flex flexWrap="wrap">
-              <Badge colorScheme="blue" mr="2" mb="2">Question 1</Badge>
-              <Badge colorScheme="blue" mr="2" mb="2">Question 2</Badge>
-              <Badge colorScheme="blue" mr="2" mb="2">Question 3</Badge>
-              {/* Add more badges for additional questions */}
-            </Flex>
-          </Box>
-          {/* Recommendation for answers */}
-          <Box>
-            <Text fontSize="lg" fontWeight="semibold" color="white" mb="2">
-              Top Answers
-            </Text>
-            <Flex flexWrap="wrap">
-              <Badge colorScheme="green" mr="2" mb="2">Answer 1</Badge>
-              <Badge colorScheme="green" mr="2" mb="2">Answer 2</Badge>
-              <Badge colorScheme="green" mr="2" mb="2">Answer 3</Badge>
-              {/* Add more badges for additional answers */}
-            </Flex>
-          </Box>
-        </VStack>
+        <Box maxHeight="calc(100vh - 230px)" overflowY="auto" id='scrollbar'>
+          <VStack spacing="4" p="4" borderRadius="md">
+            {mostPlaceNames.length === 0 ? (
+              <Text fontSize="md" color="white" >
+                ยังไม่มีข้อมูล
+              </Text>
+            ) : (
+              mostPlaceNames.slice(0, 3).map((place, index) => (
+                <VStack key={index} align="flex-start" flex="1">
+                  <Text fontSize="xl" color="white" mb="2" fontWeight='bold' textAlign={"left"} noOfLines={[1, 2, 3]}>
+                    {index + 1}.{place.place_name}
+                  </Text>
+                  <Image
+                    src={place.img}
+                    alt={place.place_name}
+                    
+                    
+                  />
+                  
+                  {/* <Text fontSize="sm" color="white" mb="2" textAlign={"left"} noOfLines={[1, 2, 3]}>
+                    {place.address ? place.address : "ที่อยู่ : ไม่มีข้อมูล"}
+                  </Text>
+                  <Text fontSize="sm" color="white" mb="2" textAlign={"left"} noOfLines={[1, 2, 3]}>
+                    {place.facility ? place.facility : "สิ่งอำนวยความสะดวก : ไม่มีข้อมูล"}
+                  </Text>
+                  <Text fontSize="sm" color="white" mb="2" textAlign={"left"} noOfLines={[1, 2, 3,4,5]}>
+                    {place.all_day_time ? place.all_day_time : "วันเวลาทำการ : ไม่มีข้อมูล"}
+                  </Text> */}
+                </VStack>
+              ))
+            )}
+          </VStack>
+        </Box>
       </Container>
     </Box>
   );

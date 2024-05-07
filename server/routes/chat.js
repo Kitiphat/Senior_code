@@ -1,5 +1,5 @@
 const express = require("express");
-const { storeChatroomData, storeContent, chatHistory, deleteChatHistory, lastQuestion, checkChatroomId } = require("../controller/chat");
+const { storeChatroomData, storeContent, chatHistory, deleteChatHistory, lastQuestion, checkChatroomId, showMostPlaceCounts } = require("../controller/chat");
 const router = express.Router();
 const { auth } = require("../middleware/auth");
 
@@ -23,9 +23,14 @@ router.post("/deletehistory", auth, deleteChatHistory);
 //Method GET
 router.get("/lastquestion/:id", auth, lastQuestion);
 
-//lastQuestion
-//EndPoint http://localhost:3001/api/lastquestion/:id
+//checkChatroomId
+//EndPoint http://localhost:3001/api/checkuuid/:id
 //Method GET
 router.get("/checkuuid/:id", auth, checkChatroomId);
+
+//showMostPlaceCounts
+//EndPoint http://localhost:3001/api/showtopplace
+//Method GET
+router.get("/showtopplace", showMostPlaceCounts);
 
 module.exports = router;

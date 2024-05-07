@@ -20,8 +20,9 @@ exports.storeChatroomData = async (req, res, next) => {
       "SELECT * FROM chatroom_data WHERE chatroom_path_id = $1",
       [chatroomId]
     );
+    console.log(chatroomId)
     if (selected_chatroom?.rows[0]?.chatroom_path_id !== chatroomId) {
-      
+      console.log("Insert data when chatroom id is not the same line 25 chat.js")
       // Use the formatted time to set create_at and update_at timestamps
       const result = await pool.query(
         "INSERT INTO chatroom_data (chatroom_path_id, user_id, update_at, is_enable, create_at) VALUES ($1, $2, $3, $4, $5) RETURNING *",
@@ -46,7 +47,7 @@ exports.storeChatroomData = async (req, res, next) => {
 
 exports.storeContent = async (req, res) => {
   try {
-    const { chatroomId, answer, question } = req.body;
+    const { chatroomId, answer, question, location } = req.body;
     const user_id = req.user.userId;
 
     // Get the current local time in UTC format
@@ -60,11 +61,11 @@ exports.storeContent = async (req, res) => {
       .toISOString()
       .replace("T", " ")
       .slice(0, -5);
-
+    
     // Insert into user_questions and get the inserted row
     const selected_question = await pool.query(
-      "INSERT INTO user_questions (chatroom_path_id, user_id, user_question_content, create_at, update_at, is_enable) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
-      [chatroomId, user_id, question, formattedTime, formattedTime, 0]
+      "INSERT INTO user_questions (chatroom_path_id, user_id, user_question_content, create_at, update_at, is_enable, place_name) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
+      [chatroomId, user_id, question, formattedTime, formattedTime, 0, location]
     );
     const question_id = selected_question.rows[0].question_id;
 
@@ -81,6 +82,19 @@ exports.storeContent = async (req, res) => {
         question_id,
       ]
     );
+    
+    
+    // Increase count for place_name in travel_place_data table
+    const addCountsPlace = await pool.query(
+      "UPDATE travel_place_data SET counts = counts + 1 WHERE place_name = $1",
+      [location]
+    );
+
+    
+    // Respond with success message
+    res.status(200).json({ message: "Chat content stored successfully" });
+
+
   } catch (error) {
     // Handle errors appropriately
     console.error("Error:", error);
@@ -102,6 +116,7 @@ exports.chatHistory = async (req, res) => {
       return res.status(404).json({ error: "No chat history found" });
     }
     res.json(result.rows);
+    console.log("Restore history back")
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({ error: "An error occurred while fetching chat history" });
@@ -176,5 +191,17 @@ exports.checkChatroomId = async (req, res, next) => {
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({ error: "An error occurred while checking chatroom" });
+  }
+}
+
+exports.showMostPlaceCounts = async (req, res) => {
+  try {
+    const result = await pool.query(
+      "SELECT place_name, img, facility, address, all_day_time FROM travel_place_data ORDER BY counts DESC LIMIT 3"
+    );
+    res.json(result.rows);
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "An error occurred while fetching most place counts" });
   }
 }

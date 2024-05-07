@@ -16,7 +16,7 @@ export const chatHistory = async (id) => {
     );  // send data to server
     return response.data;
   } catch (error) {
-    console.log("Error sending data!", error);
+    console.log("Error sending data! chatHistory", error);
     return { error: error.response.data || "Error storing data!" };
   }
 };
@@ -70,6 +70,28 @@ export const deleteHistory = async (id) => {
      
       const response = await axios.get(
         `http://localhost:3001/api/checkuuid/${id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "authtoken": token // Include the token in the request headers
+          },
+        }
+      );  // send data to server
+      return response.data;
+    } catch (error) {
+      console.log("Error sending data!", error);
+      return { error: error.response.data || "Error storing data!" };
+    }
+  }
+
+
+  export const showMostPlaceCounts = async () => {
+    const token = localStorage.getItem('token');
+    
+    try {
+     
+      const response = await axios.get(
+        `http://localhost:3001/api/showtopplace`,
         {
           headers: {
             "Content-Type": "application/json",
