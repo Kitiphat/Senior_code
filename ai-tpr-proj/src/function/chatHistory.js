@@ -56,6 +56,7 @@ export const deleteHistory = async (id) => {
           },
         }
       );  // send data to server
+      console.log("data from function lastQuestion",response.data);
       return response.data;
     } catch (error) {
       console.log("Error sending data!", error);

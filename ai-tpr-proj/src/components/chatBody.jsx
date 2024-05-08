@@ -48,7 +48,7 @@ const ChatMain = () => {
   const [idChatName, setIdChatName] = useState('');
   const { id } = useParams();
   const [promptList, setPromptList] = useState([]);
-  const [showPrompt, setShowPrompt] = useState(true);
+  // const [showPrompt, setShowPrompt] = useState(true);
   const examPrompt = [
     "ช่วยแนะนำสถานที่ท่องเที่ยวเกี่ยวกับน้ำตก",
     "ช่วยแนะนำสถานที่ท่องเที่ยวเกี่ยวกับวัด",
@@ -80,15 +80,15 @@ const ChatMain = () => {
 
   const handleResponse = async (response, question) => {
     try {
-        console.log("Response data:", response.data);
+        // console.log("Response data:", response.data);
       
         const formattedAnswer = formatAnswerFromFlask(
             response.data.answer.replace(/\n/g, "<br>")
         );
-        console.log("Formatted answer:", formattedAnswer);
+        // console.log("Formatted answer:", formattedAnswer);
       
         setMessages([...messages, { question, answer: formattedAnswer }]);
-        console.log("Updated messages:", messages);
+        // console.log("Updated messages:", messages);
       
         const chatData = {
             chatroomId: id,
@@ -96,10 +96,10 @@ const ChatMain = () => {
             answer: formattedAnswer,
             location: response.data.location_list[0]
         };
-        console.log("Chat data:", chatData);
+        // console.log("Chat data:", chatData);
       
         setPromptList(response?.data.prompts);
-        console.log("Prompt list:", response?.data.prompts);
+        // console.log("Prompt list:", response?.data.prompts);
 
         const result = await storeContent(chatData);
         console.log("Store content result:", result);
@@ -115,19 +115,21 @@ const ChatMain = () => {
 };
 
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post("http://127.0.0.1:5000/query", {
-        question,
-      });
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  try {
+    const response = await axios.post("http://127.0.0.1:5000/query", {
+      question,
+    });
+    if (response.data) { // Check if response data exists
       await handleResponse(response, question);
       setQuestion("");
-      console.log("line 116 chatBody",setQuestion)
-    } catch (error) {
-      console.error("Error:", error);
     }
-  };
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
+
 
   const handleExamPrompt = async (text) => {
     try {
@@ -185,6 +187,7 @@ const ChatMain = () => {
   // }, [id]);
   
   
+  
 
   useEffect(() => {
     setPromptList([]);
@@ -212,15 +215,36 @@ const ChatMain = () => {
   }, [id]); // Add id as a dependency here
   
 
+  // useEffect(() => {
+  //   setPromptList([]);
+  //   const fetchData = async () => {
+  //     const res = await lastQuestion(id);
+  //     if (res.length > 0 && res) {
+  //       // handlePromptClick(res[0].user_question_content);
+  //       console.log("show last question soon")
+  //     }
+  //   };
+  //   id && fetchData();
+  // }, [id]);
+
   useEffect(() => {
-    setPromptList([]);
     const fetchData = async () => {
-      const res = await lastQuestion(id);
-      if (res.length > 0 && res) {
-        handlePromptClick(res[0].user_question_content);
+      try {
+        setPromptList([]);
+        const res = await lastQuestion(id);
+        if (res.length > 0) {
+          const lastQuestionContent = res[0].user_question_content;
+          console.log("Last question:", lastQuestionContent);
+          // handlePromptClick(lastQuestionContent);
+        }
+      } catch (error) {
+        console.error("Error fetching last question:", error);
       }
     };
-    id && fetchData();
+
+    if (id) {
+      fetchData();
+    }
   }, [id]);
 
   useEffect(() => {
@@ -235,21 +259,6 @@ const ChatMain = () => {
     }
   }, [messages]);
 
-  useEffect(() => {
-    // Screen size checking function to configure state to show or hide className='chat-prompt'
-    const handleResize = () => {
-      if (chatContainerRef.current) {
-        const chatContainerHeight = chatContainerRef.current.clientHeight;
-        const chatPromptHeight = 80;
-        setShowPrompt(chatContainerHeight > chatPromptHeight);
-      }
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize); // Add event listener for changing screen size
-    return () => {
-      window.removeEventListener("resize", handleResize); // Delete the event listener when the component is unmounted.
-    };
-  }, [messages, promptList]);
   
   // const handleNewChatName = (e) => {
   //   const newChatName = e.target.value.trim(); // Trim and fallback to "Chat Room" if empty
@@ -457,7 +466,7 @@ const ChatMain = () => {
           </svg>
         </Button>
       </Box>
-      {showPrompt && (
+     
         <Box
           className="prompt"
           height="80px"
@@ -490,7 +499,7 @@ const ChatMain = () => {
             </Tooltip>
           ))}
         </Box>
-      )}
+     
       <ToastContainer position="top-center" />
     </Box>
   );
