@@ -45,17 +45,19 @@ function App() {
                 <LeftSideBar onCreateChatroom={handleCreateChatroom} onSelectChatroom={handleSelectChatroom} />
               </GridItem>
               <GridItem colSpan={1} bgColor="#F7F7F8" position="relative">
+              
                 <ChatMain activeChatroom={activeChatroom} /> 
                 <Button
                   position="absolute"
-                 
-                  right={isRightSidebarOpen ? "5px" : "5px"}
-                  top="50%"
+                  bgColor="transparent"
+                  _hover={{bgColor: "transparent"}}
+                  right={isRightSidebarOpen ? "0" : "0"}
+                  top="25px"
                   transform="translateY(-50%)"
                   onClick={toggleRightSidebar}
                   zIndex="1"
                 >
-                  {isRightSidebarOpen ? <ChevronRightIcon /> :<ChevronLeftIcon />}
+                  {isRightSidebarOpen ? <ChevronRightIcon color="white" boxSize="30px" _hover={{transform: "scale(1.75)"}}/> :<ChevronLeftIcon color="white" boxSize="30px" _hover={{transform: "scale(1.75)"}}/>}
                 </Button>
               </GridItem>
               <GridItem colSpan={isRightSidebarOpen ? 1 : 0} borderRightRadius="20" bgColor="#999999" ml="1">
