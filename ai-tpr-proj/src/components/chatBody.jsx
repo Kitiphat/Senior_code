@@ -18,24 +18,10 @@ import { storeContent } from "../function/chatContent";
 import "./ScrollBar.css";
 import "./Button.css";
 import { toast, ToastContainer } from "react-toastify";
-import { chatHistory, lastQuestion } from "../function/chatHistory";
+import { chatHistory } from "../function/chatHistory";
 
 
-// const getDefaultChatRoomName = (chatrooms, defaultName) => {
-//   // Check if chatrooms is an array and not empty
-//   if (Array.isArray(chatrooms) && chatrooms.length > 0) {
-//     const id = chatrooms[0].id; // Assuming you want to check the ID of the first chatroom
-//     const selectedChatroom = chatrooms.find(chatroom => chatroom.id === id);
 
-//     if (selectedChatroom) {
-//       // If the chatroom with the matching ID is found, return its name
-//       return selectedChatroom.name;
-//     }
-//   }
-
-//   // If chatrooms is empty or no matching chatroom is found, return the default name
-//   return defaultName;
-// };
 
 
 const ChatMain = () => {
@@ -44,8 +30,8 @@ const ChatMain = () => {
   const [messages, setMessages] = useState([]);
   const [chatRoomName, setChatRoomName] = useState("");
   const [changeRoomName, setChangeRoomName] = useState(false);
-  // const [newChatRoomName, setNewChatRoomName ] = useState(getDefaultChatRoomName(JSON.parse(localStorage.getItem('chatrooms')), 'New Chat Room'));
-  const [idChatName, setIdChatName] = useState('');
+  const [newChatRoomName, setNewChatRoomName] = useState('New Chat Room');
+
   const { id } = useParams();
   const [promptList, setPromptList] = useState([]);
   // const [showPrompt, setShowPrompt] = useState(true);
@@ -172,19 +158,41 @@ const handleSubmit = async (e) => {
   };
   
   // useEffect(() => {
+  //   console.log("Current chat room ID:", id);
   //   const chatrooms = JSON.parse(localStorage.getItem('chatrooms'));
-    
   //   if (Array.isArray(chatrooms) && chatrooms.length > 0) {
-  //     const id = chatrooms[0].id; // Assuming you want to check the ID of the first chatroom
   //     const selectedChatroom = chatrooms.find(chatroom => chatroom.id === id);
-      
   //     if (selectedChatroom) {
-  //       // If the chatroom with the matching ID is found
   //       setIdChatName(selectedChatroom.id);
   //       setChatRoomName(selectedChatroom.name);
   //     }
   //   }
   // }, [id]);
+  // Update newChatRoomName when id changes
+
+useEffect(() => {
+  if (id) {
+    const chatrooms = JSON.parse(localStorage.getItem('chatrooms'));
+    const defaultName = 'Chat Room';
+    const selectedChatroom = chatrooms.find(chatroom => chatroom.id === id);
+    const roomName = selectedChatroom ? selectedChatroom.name : defaultName;
+    setNewChatRoomName(roomName);
+  }
+}, [id]);
+  
+  useEffect(() => {
+    console.log("Current chat room ID:", id);
+    const chatrooms = JSON.parse(localStorage.getItem('chatrooms'));
+    
+    if (Array.isArray(chatrooms) && chatrooms.length > 0) {
+      const selectedChatroom = chatrooms.find(chatroom => chatroom.id === id);
+      
+      if (selectedChatroom) {
+        // If the chatroom with the matching ID is found
+        setChatRoomName(selectedChatroom.name);
+      }
+    }
+  }, [id]);
   
   
   
@@ -215,37 +223,6 @@ const handleSubmit = async (e) => {
   }, [id]); // Add id as a dependency here
   
 
-  // useEffect(() => {
-  //   setPromptList([]);
-  //   const fetchData = async () => {
-  //     const res = await lastQuestion(id);
-  //     if (res.length > 0 && res) {
-  //       // handlePromptClick(res[0].user_question_content);
-  //       console.log("show last question soon")
-  //     }
-  //   };
-  //   id && fetchData();
-  // }, [id]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setPromptList([]);
-        const res = await lastQuestion(id);
-        if (res.length > 0) {
-          const lastQuestionContent = res[0].user_question_content;
-          console.log("Last question:", lastQuestionContent);
-          // handlePromptClick(lastQuestionContent);
-        }
-      } catch (error) {
-        console.error("Error fetching last question:", error);
-      }
-    };
-
-    if (id) {
-      fetchData();
-    }
-  }, [id]);
 
   useEffect(() => {
     // Scroll chat container to bottom when new content is added
@@ -306,15 +283,14 @@ const handleSubmit = async (e) => {
             // Hide input field after submission
             setChangeRoomName(false);
           }}
-          // value={newChatRoomName}
+          value={newChatRoomName}
           // onChange={(e) => handleNewChatName(e) }
           placeholder="Enter new chat room name"
           _placeholder={{ color: "white",  opacity: 0.5}}
         />
       ) : (
         <Text fontSize="18px" color="white" as="b" mr="2">
-          New chat
-          {/* {newChatRoomName} */}
+          {newChatRoomName}
         </Text>
       )}
 

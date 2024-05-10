@@ -3,7 +3,7 @@ import { Box, Container, Text, Divider, VStack, Image } from '@chakra-ui/react';
 import { showMostPlaceCounts } from '../function/chatHistory';
 import "./ScrollBar.css";
 
-const RightSideBar = () => {
+const RightSideBar = ({ isOpen }) => {
   const [mostPlaceNames, setMostPlaceNames] = useState([]);
 
   useEffect(() => {
@@ -15,7 +15,7 @@ const RightSideBar = () => {
   }, []);
 
   return (
-    <Box height="calc(100vh - 130px)" ml="2" id="scrollbar" >
+    <Box height="calc(100vh - 130px)" ml="2" id="scrollbar" style={{ display: isOpen ? 'block' : 'none' }}>
       <Container mt="5">
         <Text fontSize="xl" fontWeight="bold" color="white" mb="4">
           Recommendations
