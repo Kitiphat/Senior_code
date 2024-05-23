@@ -40,7 +40,7 @@ const RightSideBar = ({ isOpen }) => {
                     
                   />
                   
-                  {/* <Text fontSize="sm" color="white" mb="2" textAlign={"left"} noOfLines={[1, 2, 3]}>
+                  <Text fontSize="sm" color="white" mb="2" textAlign={"left"} noOfLines={[1, 2, 3]}>
                     {place.address ? place.address : "ที่อยู่ : ไม่มีข้อมูล"}
                   </Text>
                   <Text fontSize="sm" color="white" mb="2" textAlign={"left"} noOfLines={[1, 2, 3]}>
@@ -48,7 +48,7 @@ const RightSideBar = ({ isOpen }) => {
                   </Text>
                   <Text fontSize="sm" color="white" mb="2" textAlign={"left"} noOfLines={[1, 2, 3,4,5]}>
                     {place.all_day_time ? place.all_day_time : "วันเวลาทำการ : ไม่มีข้อมูล"}
-                  </Text> */}
+                  </Text>
                 </VStack>
               ))
             )}

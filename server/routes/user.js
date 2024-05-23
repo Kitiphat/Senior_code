@@ -6,6 +6,6 @@ const { auth } = require("../middleware/auth");
 //listUser
 //EndPoint http://localhost:3001/api/users
 //Method GET
-router.get("/users" , auth ,listUser );
+router.get("/users" ,auth ,listUser );
 
 module.exports = router;

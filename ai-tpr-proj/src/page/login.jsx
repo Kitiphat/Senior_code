@@ -20,7 +20,7 @@ import { EmailIcon, LockIcon } from "@chakra-ui/icons";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({ username: "", password: "" });
-  const path = process.env.REACT_APP_BASE_API_URL;
+  const BASE_URL = process.env.REACT_APP_BASE_API_URL;
   const [error, setError] = useState(null);
 
   const rounter = useNavigate();
@@ -39,7 +39,7 @@ const LoginPage = () => {
       setError(null);
     }
     try {
-      const response = await axios.post(`${path}/api/signin`, formData);
+      const response = await axios.post(`${BASE_URL}api/signin`, formData);
       if (response.status === 200) {
         toast.success("Login Successful");
       }

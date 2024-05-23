@@ -1,12 +1,14 @@
 import axios from "axios";
 
+const BASE_URL = process.env.REACT_APP_BASE_API_URL;
+
 export const chatHistory = async (id) => {
   const token = localStorage.getItem('token');
   
   try {
    
     const response = await axios.get(
-      `http://localhost:3001/api/chathistory/${id}`,
+      ` ${BASE_URL}api/chathistory/${id}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -27,7 +29,7 @@ export const deleteHistory = async (id) => {
     try {
         
       const response = await axios.post(
-        `http://localhost:3001/api/deletehistory`,{chatroomId: id},
+        `${BASE_URL}api/deletehistory`,{chatroomId: id},
         {
           headers: {
             "Content-Type": "application/json",
@@ -48,7 +50,7 @@ export const deleteHistory = async (id) => {
     try {
      
       const response = await axios.get(
-        `http://localhost:3001/api/lastquestion/${id}`,
+        `${BASE_URL}api/lastquestion/${id}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -70,7 +72,7 @@ export const deleteHistory = async (id) => {
     try {
      
       const response = await axios.get(
-        `http://localhost:3001/api/checkuuid/${id}`,
+        `${BASE_URL}api/checkuuid/${id}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -92,7 +94,7 @@ export const deleteHistory = async (id) => {
     try {
      
       const response = await axios.get(
-        `http://localhost:3001/api/showtopplace`,
+        `${BASE_URL}api/showtopplace`,
         {
           headers: {
             "Content-Type": "application/json",

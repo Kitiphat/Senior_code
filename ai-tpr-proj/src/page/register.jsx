@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 const Register = () => {
-  const path = process.env.REACT_APP_BASE_API_URL;
+  const BASE_URL = process.env.REACT_APP_BASE_API_URL;
   const rounter = useNavigate();
   const [formData, setFormData] = useState({
     fname: '',
@@ -41,8 +41,9 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log('API path:', path)
-      const response = await axios.post(`${path}/api/signup`, formData);
+      console.log('API path:', BASE_URL)
+      console.log('-3-3-3-3-3-')
+      const response = await axios.post(`${BASE_URL}api/signup`, formData);
       if (response.status === 200) {
         rounter('/signin');
         toast.success('Registered Successfully! Please login to continue');

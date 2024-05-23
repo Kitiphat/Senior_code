@@ -197,7 +197,7 @@ exports.checkChatroomId = async (req, res, next) => {
 exports.showMostPlaceCounts = async (req, res) => {
   try {
     const result = await pool.query(
-      "SELECT place_name, img, facility, address, all_day_time FROM travel_place_data ORDER BY counts DESC LIMIT 3"
+      "SELECT place_name, img, facility, address, all_day_time FROM travel_place_data  WHERE counts != 0 ORDER BY counts DESC LIMIT 3"
     );
     res.json(result.rows);
   } catch (error) {

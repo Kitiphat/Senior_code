@@ -1,12 +1,14 @@
 import axios from "axios";
 
+const BASE_URL = process.env.REACT_APP_BACKEND_URL;
+
 export const storeContent = async (chatData) => {
   const token = localStorage.getItem('token');
   
   try {
     console.log("storeContent", chatData);
     const response = await axios.post(
-      "http://localhost:3001/api/storechatdata",
+      `${BASE_URL}api/storechatdata`,
       chatData,
       {
         headers: {
