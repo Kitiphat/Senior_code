@@ -104,7 +104,7 @@ const ChatMain = () => {
 const handleSubmit = async (e) => {
   e.preventDefault();
   try {
-    const response = await axios.post("http://127.0.0.1:5000/query", {
+    const response = await axios.post("http://127.0.0.1:8000/query", {
       question,
     });
     if (response.data) { // Check if response data exists
@@ -119,7 +119,7 @@ const handleSubmit = async (e) => {
 
   const handleExamPrompt = async (text) => {
     try {
-      const response = await axios.post("http://127.0.0.1:5000/query", {
+      const response = await axios.post("http://127.0.0.1:8000/query", {
         question: text,
       });
       await handleResponse(response, text);
@@ -130,7 +130,7 @@ const handleSubmit = async (e) => {
 
   const handlePromptClick = async (prompt) => {
     try {
-      const response = await axios.post("http://127.0.0.1:5000/query", {
+      const response = await axios.post("http://127.0.0.1:8000/query", {
         question: prompt,
       });
       await handleResponse(response, prompt);
