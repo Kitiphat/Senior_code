@@ -8,7 +8,7 @@ export const storeContent = async (chatData) => {
   try {
     console.log("storeContent", chatData);
     const response = await axios.post(
-      `${BASE_URL}/api/storechatdata`,
+      `${BASE_URL}api/storechatdata`,
       chatData,
       {
         headers: {
