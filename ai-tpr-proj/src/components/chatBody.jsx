@@ -20,10 +20,6 @@ import "./Button.css";
 import { toast, ToastContainer } from "react-toastify";
 import { chatHistory } from "../function/chatHistory";
 
-
-
-
-
 const ChatMain = () => {
   const chatContainerRef = useRef(null);
   const [question, setQuestion] = useState("");
@@ -104,7 +100,7 @@ const ChatMain = () => {
 const handleSubmit = async (e) => {
   e.preventDefault();
   try {
-    const response = await axios.post("http://127.0.0.1:5000/query", {
+    const response = await axios.post("http://127.0.0.1:8000/query", {
       question,
     });
     if (response.data) { // Check if response data exists
@@ -119,7 +115,7 @@ const handleSubmit = async (e) => {
 
   const handleExamPrompt = async (text) => {
     try {
-      const response = await axios.post("http://127.0.0.1:5000/query", {
+      const response = await axios.post("http://127.0.0.1:8000/query", {
         question: text,
       });
       await handleResponse(response, text);
@@ -130,7 +126,7 @@ const handleSubmit = async (e) => {
 
   const handlePromptClick = async (prompt) => {
     try {
-      const response = await axios.post("http://127.0.0.1:5000/query", {
+      const response = await axios.post("http://127.0.0.1:8000/query", {
         question: prompt,
       });
       await handleResponse(response, prompt);
@@ -259,11 +255,6 @@ useEffect(() => {
   //     setChatRoomName(newChatName);
   //   }
   // };
-  
-  
- 
-  
-    
 
   return (
     <Box>
@@ -307,7 +298,7 @@ useEffect(() => {
           ref={chatContainerRef}
           paddingTop="30px"
           height="100vh"
-          maxHeight="calc(100vh - 230px)"
+          maxHeight="calc(100vh - 240px)"
           display="inline-flex"
           justifyItems="center"
           alignItems="center"
@@ -348,7 +339,7 @@ useEffect(() => {
           ref={chatContainerRef}
           paddingTop="30px"
           height="100vh"
-          maxHeight="calc(100vh - 230px)"
+          maxHeight="calc(100vh - 240px)"
           overflowY="auto"
         >
           {messages.map((message, index) => (
